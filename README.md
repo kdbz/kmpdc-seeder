@@ -83,6 +83,49 @@ erDiagram
 
 ---
 
+Perfect — here’s the **section** you can add immediately after the **Database Schema** in your `README.md`.
+It formally instructs users to create the models and relationships as per the schema, maintaining your professional documentation tone:
+
+---
+
+### 🧩 **Model Setup & Relationships**
+
+Before running the import commands, ensure that all **Eloquent models** and their respective **relationships** are correctly defined according to the database schema provided above.
+
+Each model should reflect its table structure and foreign key relationships.
+
+For example:
+
+* `Practitioner`
+
+  * `belongsTo` → `Status`, `Speciality`, `SubSpeciality`
+  * `hasMany` → `Contact`, `License`, `Qualification`, `PractitionerDocument`, `VerificationLog`
+
+* `Qualification`
+
+  * `belongsTo` → `Practitioner`, `Degree`, `Institution`
+
+* `SubSpeciality`
+
+  * `belongsTo` → `Speciality`
+
+* `License`
+
+  * `belongsTo` → `Practitioner`
+  * `hasMany` → `Payment`
+
+These relationships are essential for the **import command** to correctly associate records during data seeding.
+Ensure that:
+
+* Foreign keys are properly defined in migrations.
+* Model relationships use **typed relationship methods** (as required in Laravel 12).
+* Nullable foreign keys (e.g., `speciality_id`, `sub_speciality_id`) are handled gracefully to avoid integrity constraint violations.
+
+> ⚠️ **Note:** The package assumes these model relationships exist and are correctly implemented. Missing or incorrectly defined relationships may cause the import process to fail or produce inconsistent data.
+
+---
+
+
 ## 🔁 Workflow Overview
 
 This package processes practitioner data in **three main stages**:
