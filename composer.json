@@ -1,0 +1,29 @@
+{
+    "name": "thibitisha/kmpdc-seeder",
+    "description": "Laravel package to seed KMPDC practitioner data",
+    "type": "library",
+    "require": {
+        "php": "^8.2",
+        "symfony/dom-crawler": "^6.0",
+        "symfony/css-selector": "^6.0",
+        "league/csv": "^9.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Thibitisha\\KmpdcSeeder\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kdbz",
+            "email": "450845+kdbz@users.noreply.github.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Thibitisha\\KmpdcSeeder\\KmpdcSeederServiceProvider"
+            ]
+        }
+    }
+}
