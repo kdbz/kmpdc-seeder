@@ -2,6 +2,7 @@
     "name": "thibitisha/kmpdc-seeder",
     "description": "Laravel package to seed KMPDC practitioner data",
     "type": "library",
+    "license": "MIT",
     "require": {
         "php": "^8.2",
         "symfony/dom-crawler": "^6.0",
