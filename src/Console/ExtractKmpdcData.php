@@ -90,7 +90,6 @@ class ExtractKmpdcData extends Command
         }
 
         // Pick the latest file
-        usort($files, fn($a, $b) => filemtime($b) <=> filemtime($a));
         $csvPath = end($files);
         $this->info("📄 Reading from: {$csvPath}");
         if (!file_exists($csvPath)) {
