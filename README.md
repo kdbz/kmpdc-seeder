@@ -28,7 +28,7 @@ This package is designed for:
 ## 📦 Installation
 
 ```bash
-composer require thibitisha/kmpdc-seeder
+composer require thibitisha/kmpdc-seeder:^0.0.16-alpha
 ````
 ---
 
