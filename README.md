@@ -220,8 +220,6 @@ This package is open-sourced software licensed under the [MIT license](LICENSE).
 ---
 
 **Author:** [KDBZ](https://github.com/kdbz)
-**Repository:** [https://github.com/kdbz/kmpdc-extractor](https://github.com/kdbz/kmpdc-seeder)
-
-```
+**Repository:** [https://github.com/kdbz/kmpdc-seeder](https://github.com/kdbz/kmpdc-seeder)
 
 ---
