@@ -1,7 +1,7 @@
 # 🩺 KMPDC Seeder
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/kdbz/kmpdc-seeder.svg?style=flat-square)](https://packagist.org/packages/kdbz/kmpdc-seeder)
-[![Total Downloads](https://img.shields.io/packagist/dt/kdbz/kmpdc-seeder.svg?style=flat-square)](https://packagist.org/packages/kdbz/kmpdc-seeder)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/thibitisha/kmpdc-seeder.svg?style=flat-square)](https://packagist.org/packages/thibitisha/kmpdc-seeder)
+[![Total Downloads](https://img.shields.io/packagist/dt/thibitisha/kmpdc-seeder.svg?style=flat-square)](https://packagist.org/packages/thibitisha/kmpdc-seeder)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Laravel](https://img.shields.io/badge/Laravel-12.x-orange.svg?style=flat-square)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-^8.2-777BB4.svg?style=flat-square)](https://www.php.net)
