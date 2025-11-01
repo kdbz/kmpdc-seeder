@@ -28,7 +28,7 @@ This package is designed for:
 ## 📦 Installation
 
 ```bash
-composer require kdbz/kmpdc-seeder
+composer require thibitisha/kmpdc-seeder
 ````
 ---
 
