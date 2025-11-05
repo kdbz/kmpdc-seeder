@@ -28,7 +28,7 @@ This package is designed for:
 ## 📦 Installation
 
 ```bash
-composer require thibitisha/kmpdc-seeder:^0.0.18-alpha
+composer require thibitisha/kmpdc-seeder:^0.0.19-alpha
 ````
 ---
 
@@ -80,11 +80,6 @@ erDiagram
 
 > 📝 **Notes**
 > * All inserts and relationships are handled via **Eloquent models**
-
----
-
-Perfect — here’s the **section** you can add immediately after the **Database Schema** in your `README.md`.
-It formally instructs users to create the models and relationships as per the schema, maintaining your professional documentation tone:
 
 ---
 
@@ -152,7 +147,7 @@ php artisan kmpdc:sync
 
 ```
 storage/app/kmpdc-data/csv
-└── 2025_10_25_122105_kmpdc_practitioners.csv
+└── 0000_00_00_122105_kmpdc_practitioners.csv
 ```
 
 Each run produces a uniquely named file based on the timestamp, ensuring previous syncs remain preserved.
