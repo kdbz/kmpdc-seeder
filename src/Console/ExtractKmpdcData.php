@@ -315,7 +315,6 @@ class ExtractKmpdcData extends Command
     {
         //sanitize
         $degree = $this->sanitizeDegree($degree);
-        echo $degree . "\n";
 
         //make sure degree is not empty
         if (!empty($degree)) {
