@@ -184,7 +184,7 @@ class ImportKmpdcData extends Command
                     $degreeId = Degree::where('name', $qual['degree'] ?? '')->value('id');
                     $institutionId = Institution::where('name', $qual['institution'] ?? '')->value('id');
                     $specialityName = $qual['speciality'] ?? '';
-                    $year = $qual['year'] ?? 0;
+                    $year = ($qual['year'] == "" ? 0 : $qual['year']);
                     $qualification = Qualification::firstOrCreate(
                         [
                             'practitioner_id' => $practitionerId->id,
