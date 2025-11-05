@@ -164,13 +164,13 @@ class ImportKmpdcData extends Command
 
                     //then we update the abbrev field too
                     if($existing){
-                        $existing->abbrev = trim($name);
+                        $existing->abbrev = " ";
                         $existing->save();
                         $count++;
                         continue;
                     }else{
                         //create new with abbrev
-                        $modelClass::create(['name' => trim($name), 'abbrev' => trim($name)]);
+                        $modelClass::create(['name' => trim($name), 'abbrev' => " "]);
                         $count++;
                         continue;
                     }
