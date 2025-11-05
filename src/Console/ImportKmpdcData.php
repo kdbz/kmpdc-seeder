@@ -11,6 +11,7 @@ use App\Models\Institution;
 use App\Models\Practitioner;
 use App\Models\Degree;
 use App\Models\Qualification;
+use App\Models\Contact;
 
 class ImportKmpdcData extends Command
 {
@@ -49,6 +50,9 @@ class ImportKmpdcData extends Command
         // Step 2: Import practitioners (links to all others)
         $this->importPractitioners();
 
+        // import contacts
+        $this->importContacts();
+
 
         $this->info("✅ All data imported successfully!");
         return Command::SUCCESS;
@@ -77,6 +81,43 @@ class ImportKmpdcData extends Command
     {
         $this->importSimpleJson('statuses.json', Status::class);
         
+    }
+
+    protected function importContacts()
+    {
+        
+        $filename = 'addresses.json';
+        $path = "{$this->dataPath}/{$filename}";
+
+        if (!File::exists($path)) {
+            $this->warn("⚠️ Missing file: {$filename}");
+            return;
+        }
+
+        $data = json_decode(File::get($path), true);
+        if (!is_array($data)) {
+            $this->warn("⚠️ Invalid data in {$filename}");
+            return;
+        }
+
+        $total = 0;
+
+        foreach ($data as $address) {
+            // Find practitioner by address
+            $practitioner = Practitioner::where('address', $address)->first();
+            if ($practitioner) {
+                // Update or create contact record
+                // Assuming Contact model exists with practitioner_id and address fields
+                Contact::updateOrCreate(
+                    ['practitioner_id' => $practitioner->id],
+                    ['value' => $address],
+                    ['type' => 'address'],
+                    ['is_primary' => true]
+                    
+                );
+                $total++;
+            }
+        }
     }
 
     protected function importSpecialities()
