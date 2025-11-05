@@ -62,7 +62,7 @@ class ImportKmpdcData extends Command
     {
         $exists = $modelClass::where('name', 'UNKNOWN')->exists();
         if (!$exists) {
-            if($modeClass==SubSpeciality::class){
+            if($modelClass==SubSpeciality::class){
                 //need to link to a speciality
                 $specialityId = Speciality::where('name', 'UNKNOWN')->value('id');
                 $modelClass::create(['name' => 'UNKNOWN', 'speciality_id' => $specialityId]);
