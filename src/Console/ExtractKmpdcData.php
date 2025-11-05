@@ -12,7 +12,7 @@ use function PHPUnit\Framework\isArray;
 
 class ExtractKmpdcData extends Command
 {
-    public static array $MMed = [
+    protected $MMed = [
         "M.D",
         "M.D.",
         "M.D.STOMATOLOGY",
