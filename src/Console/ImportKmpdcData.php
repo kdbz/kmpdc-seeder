@@ -195,7 +195,6 @@ class ImportKmpdcData extends Command
                         ]
                     );
 
-                    $practitionerId->qualifications()->syncWithoutDetaching($qualification->id);
                 }
             }
             $count++;
