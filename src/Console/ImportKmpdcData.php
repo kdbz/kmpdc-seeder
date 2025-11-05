@@ -32,10 +32,19 @@ class ImportKmpdcData extends Command
 
         // Step 1: Import reference tables
         $this->importStatuses();
+        $this->addUnknownForMissing(Status::class);
+
         $this->importSpecialities();
+        $this->addUnknownForMissing(Speciality::class);
+
         $this->importSubSpecialities();
+        $this->addUnknownForMissing(SubSpeciality::class);
+
         $this->importInstitutions();
+        $this->addUnknownForMissing(Institution::class);
+
         $this->importDegrees();
+        $this->addUnknownForMissing(Degree::class);
 
         // Step 2: Import practitioners (links to all others)
         $this->importPractitioners();
@@ -49,9 +58,18 @@ class ImportKmpdcData extends Command
      * 🧱 Individual Import Methods
      * ------------------------------------------ */
 
+    public function addUnknownForMissing(string $modelClass)
+    {
+        $exists = $modelClass::where('name', 'UNKNOWN')->exists();
+        if (!$exists) {
+            $modelClass::create(['name' => 'UNKNOWN']);        
+        }
+    }
+
     protected function importStatuses()
     {
         $this->importSimpleJson('statuses.json', Status::class);
+        
     }
 
     protected function importSpecialities()
@@ -133,7 +151,11 @@ class ImportKmpdcData extends Command
         foreach ($data as $item) {
             $name = is_array($item) ? ($item['name'] ?? null) : $item;
             if ($name) {
-                $modelClass::updateOrCreate(['name' => trim($name)]);
+                if($modelClass==Degree::class or $modelClass==Institution::class){
+                    $modelClass::updateOrCreate(['name' => trim($name), 'abbrev' => trim($name)]);
+                }else{
+                    $modelClass::updateOrCreate(['name' => trim($name)]);
+                }
                 $count++;
             }
 
@@ -165,7 +187,16 @@ class ImportKmpdcData extends Command
         foreach ($records as $row) {
             $statusId = Status::where('name', $row['status'] ?? '')->value('id');
             $specId = Speciality::where('name', $row['speciality'] ?? '')->value('id');
+            //if not found, set to UNKNOWN
+            if (!$specId) {
+                $specId = Speciality::where('name', 'UNKNOWN')->value('id');
+            }
+
             $subSpecId = SubSpeciality::where('name', $row['sub_speciality'] ?? '')->value('id');
+            //if not found, set to UNKNOWN
+            if (!$subSpecId) {
+                $subSpecId = SubSpeciality::where('name', 'UNKNOWN')->value('id');
+            }
 
             $practitionerId   = Practitioner::updateOrCreate(
                 ['registration_number' => $row['registration_number']],
@@ -182,9 +213,15 @@ class ImportKmpdcData extends Command
             {
                 foreach ($row['qualifications'] as $qual) {
                     $degreeId = Degree::where('name', $qual['degree'] ?? '')->value('id');
+                    //if not found, set to UNKNOWN
+                    if (!$degreeId) {
+                        $degreeId = Degree::where('name', 'UNKNOWN')->value('id');
+                    }
+
                     $institutionId = Institution::where('name', $qual['institution'] ?? '')->value('id');
                     $specialityName = $qual['speciality'] ?? '';
                     $year = ($qual['year'] == "" ? 0 : $qual['year']);
+                    
                     $qualification = Qualification::firstOrCreate(
                         [
                             'practitioner_id' => $practitionerId->id,
