@@ -164,7 +164,7 @@ class ImportKmpdcData extends Command
 
                     //then we update the abbrev field too
                     if($existing){
-                        $existing->abbrev = trim($name);
+                        $existing->abbrev = trim($name,15);
                         $existing->save();
                         $count++;
                         continue;
