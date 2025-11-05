@@ -28,7 +28,7 @@ This package is designed for:
 ## 📦 Installation
 
 ```bash
-composer require thibitisha/kmpdc-seeder:^0.0.19-alpha
+composer require thibitisha/kmpdc-seeder:^0.0.20-alpha
 ````
 ---
 
@@ -88,6 +88,8 @@ erDiagram
 Before running the import commands, ensure that all **Eloquent models** and their respective **relationships** are correctly defined according to the database schema provided above.
 
 Each model should reflect its table structure and foreign key relationships.
+
+> ⚠️ **Note:** the $fillable propery should also be defined in each model
 
 For example:
 
