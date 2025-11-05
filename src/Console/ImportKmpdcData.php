@@ -67,6 +67,8 @@ class ImportKmpdcData extends Command
                 $specialityId = Speciality::where('name', 'UNKNOWN')->value('id');
                 $modelClass::create(['name' => 'UNKNOWN', 'speciality_id' => $specialityId]);
                 return;
+            }else if($modelClass==Degree::class){
+                $modelClass::create(['name' => 'UNKNOWN', 'description' => 'UNKNOWN']);
             }else{
                 $modelClass::create(['name' => 'UNKNOWN']);
             }
@@ -177,7 +179,7 @@ class ImportKmpdcData extends Command
                             $modelClass::create(['name' => trim($name), 'description' => trim($name)]);
                         else
                             $modelClass::create(['name' => trim($name)]);
-                        
+
                         $count++;
                         continue;
                     }
