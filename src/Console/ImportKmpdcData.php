@@ -190,7 +190,7 @@ class ImportKmpdcData extends Command
                             'practitioner_id' => $practitionerId->id,
                             'degree_id' => $degreeId,
                             'institution_id' => $institutionId,
-                            'speciality_id' => $specialityName,
+                            'specialization' => $specialityName,
                             'year_awarded' => $year
                         ]
                     );
