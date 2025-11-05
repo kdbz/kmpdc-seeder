@@ -9,6 +9,8 @@ use App\Models\Speciality;
 use App\Models\SubSpeciality;
 use App\Models\Institution;
 use App\Models\Practitioner;
+use App\Models\Degree;
+use App\Models\Qualification;
 
 class ImportKmpdcData extends Command
 {
@@ -33,9 +35,11 @@ class ImportKmpdcData extends Command
         $this->importSpecialities();
         $this->importSubSpecialities();
         $this->importInstitutions();
+        $this->importDegrees();
 
         // Step 2: Import practitioners (links to all others)
         $this->importPractitioners();
+
 
         $this->info("✅ All data imported successfully!");
         return Command::SUCCESS;
@@ -95,6 +99,11 @@ class ImportKmpdcData extends Command
 
         $this->info("✅ Imported {$total} subspecialities from {$filename}");
     }
+
+    protected function importDegrees()
+    {
+        $this->importSimpleJson('degrees.json', Degree::class);
+    }   
 
 
     protected function importInstitutions()
@@ -157,8 +166,9 @@ class ImportKmpdcData extends Command
             $statusId = Status::where('name', $row['status'] ?? '')->value('id');
             $specId = Speciality::where('name', $row['speciality'] ?? '')->value('id');
             $subSpecId = SubSpeciality::where('name', $row['sub_speciality'] ?? '')->value('id');
+            
 
-            Practitioner::updateOrCreate(
+            $practitionerId   = Practitioner::updateOrCreate(
                 ['registration_number' => $row['registration_number']],
                 [
                     'full_name' => $row['full_name'],
@@ -167,6 +177,28 @@ class ImportKmpdcData extends Command
                     'sub_speciality_id' => $subSpecId,
                 ]
             );
+
+            // Link qualifications
+            if (!empty($row['qualifications']) && is_array($row['qualifications']))
+            {
+                foreach ($row['qualifications'] as $qual) {
+                    $degreeId = Degree::where('name', $qual['degree'] ?? '')->value('id');
+                    $institutionId = Institution::where('name', $qual['institution'] ?? '')->value('id');
+                    $specialityName = $qual['speciality'] ?? null;
+                    $year = $qual['year'] ?? null;
+                    $qualification = Qualification::firstOrCreate(
+                        [
+                            'practitioner_id' => $practitionerId->id,
+                            'degree_id' => $degreeId,
+                            'institution_id' => $institutionId,
+                            'speciality_name' => $specialityName,
+                            'year_awarded' => $year
+                        ]
+                    );
+                    
+                    $practitionerId->qualifications()->syncWithoutDetaching($qualification->id);
+                }
+            }
             $count++;
 
             if ($count % 200 === 0) {
