@@ -170,7 +170,7 @@ class ImportKmpdcData extends Command
                         continue;
                     }else{
                         //create new with abbrev
-                        $modelClass::create(['name' => trim($name), 'abbrev' => trim($name)]);
+                        $modelClass::create(['name' => trim($name), 'abbrev' => trim($name,15)]);
                         $count++;
                         continue;
                     }
