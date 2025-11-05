@@ -166,7 +166,6 @@ class ImportKmpdcData extends Command
             $statusId = Status::where('name', $row['status'] ?? '')->value('id');
             $specId = Speciality::where('name', $row['speciality'] ?? '')->value('id');
             $subSpecId = SubSpeciality::where('name', $row['sub_speciality'] ?? '')->value('id');
-            
 
             $practitionerId   = Practitioner::updateOrCreate(
                 ['registration_number' => $row['registration_number']],
@@ -191,11 +190,11 @@ class ImportKmpdcData extends Command
                             'practitioner_id' => $practitionerId->id,
                             'degree_id' => $degreeId,
                             'institution_id' => $institutionId,
-                            'speciality_name' => $specialityName,
+                            'speciality_id' => $specialityName,
                             'year_awarded' => $year
                         ]
                     );
-                    
+
                     $practitionerId->qualifications()->syncWithoutDetaching($qualification->id);
                 }
             }
