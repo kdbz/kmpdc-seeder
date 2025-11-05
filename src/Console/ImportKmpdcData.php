@@ -62,12 +62,12 @@ class ImportKmpdcData extends Command
     {
         $exists = $modelClass::where('name', 'UNKNOWN')->exists();
         if (!$exists) {
-            if ($modelClass == SubSpeciality::class) {
+            if($modelClass==SubSpeciality::class){
                 //need to link to a speciality
                 $specialityId = Speciality::where('name', 'UNKNOWN')->value('id');
                 $modelClass::create(['name' => 'UNKNOWN', 'speciality_id' => $specialityId]);
                 return;
-            } else {
+            }else{
                 $modelClass::create(['name' => 'UNKNOWN']);
             }
         }
@@ -76,6 +76,7 @@ class ImportKmpdcData extends Command
     protected function importStatuses()
     {
         $this->importSimpleJson('statuses.json', Status::class);
+        
     }
 
     protected function importSpecialities()
@@ -127,7 +128,7 @@ class ImportKmpdcData extends Command
     protected function importDegrees()
     {
         $this->importSimpleJson('degrees.json', Degree::class);
-    }
+    }   
 
 
     protected function importInstitutions()
@@ -157,23 +158,24 @@ class ImportKmpdcData extends Command
         foreach ($data as $item) {
             $name = is_array($item) ? ($item['name'] ?? null) : $item;
             if ($name) {
-                if ($modelClass == Degree::class or $modelClass == Institution::class) {
+                if($modelClass==Degree::class or $modelClass==Institution::class){
                     //return the model if it exists with name
                     $existing = $modelClass::where('name', trim($name))->first();
 
                     //then we update the abbrev field too
-                    if ($existing) {
-                        $existing->abbrev = $this->getAbbreviation(trim($name));
+                    if($existing){
+                        $existing->abbrev = trim($name);
                         $existing->save();
                         $count++;
                         continue;
-                    } else {
+                    }else{
                         //create new with abbrev
-                        $modelClass::create(['name' => trim($name), 'abbrev' => $this->getAbbreviation(trim($name))]);
+                        $modelClass::create(['name' => trim($name), 'abbrev' => trim($name)]);
                         $count++;
                         continue;
                     }
-                } else {
+
+                }else{
                     $modelClass::updateOrCreate(['name' => trim($name)]);
                 }
 
@@ -240,7 +242,8 @@ class ImportKmpdcData extends Command
             );
 
             // Link qualifications
-            if (!empty($row['qualifications']) && is_array($row['qualifications'])) {
+            if (!empty($row['qualifications']) && is_array($row['qualifications']))
+            {
                 foreach ($row['qualifications'] as $qual) {
                     $degreeId = Degree::where('name', $qual['degree'] ?? '')->value('id');
                     //if not found, set to UNKNOWN
@@ -261,6 +264,7 @@ class ImportKmpdcData extends Command
                             'year_awarded' => $year
                         ]
                     );
+
                 }
             }
             $count++;
@@ -273,25 +277,4 @@ class ImportKmpdcData extends Command
         $this->info("✅ Imported {$count} practitioners successfully.");
     }
 
-
-    /**
-     * Generates an abbreviation from a given string by taking the first letter of each word.
-     * E.g., "Master of Medicine" becomes "MM".
-     * @param string $text
-     * @return string
-     */
-    function getAbbreviation(string $text): string
-    {
-        $words = explode(' ', $text); // Split the string into an array of words
-        $abbreviation = '';
-
-        foreach ($words as $word) {
-            // Skip empty words that might result from multiple spaces
-            if (!empty($word)) {
-                $abbreviation .= mb_substr($word, 0, 1, 'utf-8'); // Get the first character
-            }
-        }
-
-        return strtoupper($abbreviation); // Convert the result to uppercase
-    }
 }
