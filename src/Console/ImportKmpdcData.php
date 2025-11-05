@@ -159,10 +159,26 @@ class ImportKmpdcData extends Command
             $name = is_array($item) ? ($item['name'] ?? null) : $item;
             if ($name) {
                 if($modelClass==Degree::class or $modelClass==Institution::class){
-                    $modelClass::updateOrCreate(['name' => trim($name), 'abbrev' => trim($name)]);
+                    //return the model if it exists with name
+                    $existing = $modelClass::where('name', trim($name))->first();
+
+                    //then we update the abbrev field too
+                    if($existing){
+                        $existing->abbrev = trim($name);
+                        $existing->save();
+                        $count++;
+                        continue;
+                    }else{
+                        //create new with abbrev
+                        $modelClass::create(['name' => trim($name), 'abbrev' => trim($name)]);
+                        $count++;
+                        continue;
+                    }
+
                 }else{
                     $modelClass::updateOrCreate(['name' => trim($name)]);
                 }
+
                 $count++;
             }
 
