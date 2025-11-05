@@ -183,7 +183,7 @@ class ImportKmpdcData extends Command
                 foreach ($row['qualifications'] as $qual) {
                     $degreeId = Degree::where('name', $qual['degree'] ?? '')->value('id');
                     $institutionId = Institution::where('name', $qual['institution'] ?? '')->value('id');
-                    $specialityName = $qual['speciality'] ?? null;
+                    $specialityName = $qual['speciality'] ?? 0;
                     $year = $qual['year'] ?? null;
                     $qualification = Qualification::firstOrCreate(
                         [
