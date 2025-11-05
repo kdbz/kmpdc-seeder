@@ -207,7 +207,7 @@ class ExtractKmpdcData extends Command
             if (!file_exists($outputDir)) mkdir($outputDir, 0775, true);
 
             file_put_contents("{$outputDir}/practitioners.json", json_encode($practitioners, JSON_PRETTY_PRINT));
-            file_put_contents("{$outputDir}/degrees.json", json_encode($degrees), JSON_PRETTY_PRINT);
+            file_put_contents("{$outputDir}/degrees.json", json_encode(array_keys($degrees), JSON_PRETTY_PRINT));
             file_put_contents("{$outputDir}/statuses.json", json_encode(array_keys($statuses), JSON_PRETTY_PRINT));
             file_put_contents("{$outputDir}/specialities.json", json_encode(array_keys($specialities), JSON_PRETTY_PRINT));
             file_put_contents("{$outputDir}/subspecialities.json", json_encode($subSpecialities), JSON_PRETTY_PRINT);
