@@ -62,7 +62,14 @@ class ImportKmpdcData extends Command
     {
         $exists = $modelClass::where('name', 'UNKNOWN')->exists();
         if (!$exists) {
-            $modelClass::create(['name' => 'UNKNOWN']);        
+            if($modeClass==SubSpeciality::class){
+                //need to link to a speciality
+                $specialityId = Speciality::where('name', 'UNKNOWN')->value('id');
+                $modelClass::create(['name' => 'UNKNOWN', 'speciality_id' => $specialityId]);
+                return;
+            }else{
+                $modelClass::create(['name' => 'UNKNOWN']);
+            }
         }
     }
 
@@ -221,7 +228,7 @@ class ImportKmpdcData extends Command
                     $institutionId = Institution::where('name', $qual['institution'] ?? '')->value('id');
                     $specialityName = $qual['speciality'] ?? '';
                     $year = ($qual['year'] == "" ? 0 : $qual['year']);
-                    
+
                     $qualification = Qualification::firstOrCreate(
                         [
                             'practitioner_id' => $practitionerId->id,
